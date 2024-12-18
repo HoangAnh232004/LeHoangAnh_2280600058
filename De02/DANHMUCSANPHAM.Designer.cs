@@ -1,4 +1,4 @@
-﻿namespace QLSanPham
+namespace QLSanPham
 {
     partial class DANHMUCSANPHAM
     {
@@ -72,45 +72,38 @@
             this.btnSearch.Size = new System.Drawing.Size(50, 25);
             this.btnSearch.TabIndex = 1;
             this.btnSearch.Text = "Tìm";
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // dgvSanPham
             // 
             this.dgvSanPham.ColumnHeadersHeight = 29;
-            this.dgvSanPham.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2,
-            this.dataGridViewTextBoxColumn3,
-            this.dataGridViewTextBoxColumn4});
             this.dgvSanPham.Location = new System.Drawing.Point(20, 60);
             this.dgvSanPham.Name = "dgvSanPham";
             this.dgvSanPham.RowHeadersWidth = 51;
             this.dgvSanPham.Size = new System.Drawing.Size(400, 200);
             this.dgvSanPham.TabIndex = 2;
+            this.dgvSanPham.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSanPham_CellContentClick);
             // 
             // dataGridViewTextBoxColumn1
             // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "Mã SP";
             this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.Width = 125;
             // 
             // dataGridViewTextBoxColumn2
             // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "Tên sản phẩm";
             this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.Width = 125;
             // 
             // dataGridViewTextBoxColumn3
             // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "Ngày nhập";
             this.dataGridViewTextBoxColumn3.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.Width = 125;
             // 
             // dataGridViewTextBoxColumn4
             // 
-            this.dataGridViewTextBoxColumn4.HeaderText = "Loại SP";
             this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.Width = 125;
@@ -227,6 +220,7 @@
             this.btnKLuu.Size = new System.Drawing.Size(75, 23);
             this.btnKLuu.TabIndex = 15;
             this.btnKLuu.Text = "K.Lưu";
+            this.btnKLuu.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // btnThoat
             // 
