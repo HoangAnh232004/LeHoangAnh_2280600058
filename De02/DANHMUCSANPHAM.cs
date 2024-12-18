@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Windows.Forms;
@@ -15,6 +15,7 @@ namespace QLSanPham
         {
             InitializeComponent();
             LoadData();
+            HideSaveButtons();
             LoadLoaiSP(); // Nạp dữ liệu LoaiSP vào ComboBox
         }
 
@@ -34,13 +35,14 @@ namespace QLSanPham
                 else
                 {
                     // Gán dữ liệu vào DataGridView
-                    dgvSanPham.DataSource = sanphams.Select(x => new
+                    var sp = sanphams.Select(x => new
                     {
                         x.MaSP,
                         x.TenSP,
                         NgayNhap = x.NgayNhap != null ? x.NgayNhap.ToString("yyyy-MM-dd") : "N/A",
                         LoaiSP = x.LoaiSP != null ? x.LoaiSP.TenLoai : "Chưa có loại sản phẩm"
                     }).ToList();
+                    dgvSanPham.DataSource = sp;
                 }
             }
             catch (Exception ex)
@@ -189,15 +191,15 @@ namespace QLSanPham
         // Phương thức hiển thị nút Lưu và K.Lưu
         private void ShowSaveButtons()
         {
-            btnLuu.Visible = true;
-            btnKLuu.Visible = true;
+            btnLuu.Enabled = true;
+            btnKLuu.Enabled = true;
         }
 
         // Phương thức ẩn nút Lưu và K.Lưu
         private void HideSaveButtons()
         {
-            btnLuu.Visible = false;
-            btnKLuu.Visible = false;
+            btnLuu.Enabled = false;
+            btnKLuu.Enabled = false;
         }
 
         // Xóa dữ liệu nhập
@@ -214,5 +216,59 @@ namespace QLSanPham
         {
             LoadData();  // Gọi LoadData khi form được tải
         }
+
+        private void dgvSanPham_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void btnKLuu_Click(object sender, EventArgs e)
+        {
+            ClearInput();
+            HideSaveButtons();
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            string keyword = TxtTim.Text.Trim();
+
+            if (string.IsNullOrEmpty(keyword))
+            {
+                MessageBox.Show("Vui lòng nhập từ khóa để tìm kiếm.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            try
+            {
+                // Tìm kiếm sản phẩm có MaSP hoặc TenSP chứa từ khóa (không phân biệt hoa thường)
+                var results = db.Sanphams
+                                .Include(s => s.LoaiSP)
+                                .Where(s => s.MaSP.Contains(keyword) || s.TenSP.Contains(keyword))
+                                .Select(s => new
+                                {
+                                    s.MaSP,
+                                    s.TenSP,
+                                    NgayNhap = s.NgayNhap,
+                                    LoaiSP = s.LoaiSP != null ? s.LoaiSP.TenLoai : "Chưa có loại sản phẩm"
+                                })
+                                .ToList();
+
+                if (results.Count > 0)
+                {
+                    dgvSanPham.DataSource = results;
+                }
+                else
+                {
+                    dgvSanPham.DataSource = null; // Xóa dữ liệu cũ
+                    MessageBox.Show("Không tìm thấy sản phẩm nào phù hợp với từ khóa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi tìm kiếm dữ liệu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+      
     }
 }
